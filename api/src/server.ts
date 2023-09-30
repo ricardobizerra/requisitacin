@@ -2,6 +2,7 @@ import fastify from 'fastify';
 import cors from '@fastify/cors';
 
 import './database/connection';
+import { appRoutes } from './routes';
 
 const app = fastify();
 
@@ -9,10 +10,7 @@ app.register(cors, {
     origin: ['http://localhost:3000'],
 })
 
-// health route
-app.get('/', async () => {
-    return 'Hello World';
-});
+app.register(appRoutes);
 
 app.listen({
     port: 3333,
