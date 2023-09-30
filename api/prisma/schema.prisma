@@ -14,25 +14,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Student {
+model User {
   id    String @id @default(uuid())
   email String @unique
   name  String
 
-  Requisition Requisition[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  role UserRole @default(STUDENT)
+
+  Student Student?
+
+  UniversitySection   UniversitySection? @relation(fields: [universitySectionId], references: [id])
+  universitySectionId String?
+}
+
+model Student {
+  id String @id @default(uuid())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  Requisition Requisition[]
 }
 
 model UniversitySection {
-  id    String @id @default(uuid())
-  name  String
-  email String @unique
+  id   String @id @default(uuid())
+  name String
+  slug String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  admins       User[]
   services     Service[]
   requisitions Requisition[]
 }
@@ -67,6 +85,11 @@ model Requisition {
 
   universitySection   UniversitySection @relation(fields: [universitySectionId], references: [id])
   universitySectionId String            @unique
+}
+
+enum UserRole {
+  STUDENT
+  ADMIN
 }
 
 enum RequisitionStatus {

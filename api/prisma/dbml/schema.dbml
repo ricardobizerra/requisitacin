@@ -2,21 +2,34 @@
 //// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 //// ------------------------------------------------------
 
-Table Student {
+Table User {
   id String [pk]
   email String [unique, not null]
   name String [not null]
-  Requisition Requisition [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  role UserRole [not null, default: 'STUDENT']
+  Student Student
+  UniversitySection UniversitySection
+  universitySectionId String
+}
+
+Table Student {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  user User [not null]
+  userId String [unique, not null]
+  Requisition Requisition [not null]
 }
 
 Table UniversitySection {
   id String [pk]
   name String [not null]
-  email String [unique, not null]
+  slug String [unique, not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  admins User [not null]
   services Service [not null]
   requisitions Requisition [not null]
 }
@@ -46,10 +59,19 @@ Table Requisition {
   universitySectionId String [unique, not null]
 }
 
+Enum UserRole {
+  STUDENT
+  ADMIN
+}
+
 Enum RequisitionStatus {
   OPENED
   CONCLUDED
 }
+
+Ref: User.universitySectionId > UniversitySection.id
+
+Ref: Student.userId - User.id [delete: Cascade]
 
 Ref: Service.universitySectionId > UniversitySection.id [delete: Cascade]
 

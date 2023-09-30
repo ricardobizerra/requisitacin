@@ -5,24 +5,24 @@ const setupDatabase = async () => {
         data: [
             {
                 name: 'Gerência de Sistemas',
-                email: 'gersist-teste@root.com.br'
+                slug: 'gersist'
             },
             {
                 name: 'Secretaria de Graduação',
-                email: 'secgrad-teste@root.com.br'
+                slug: 'secgrad'
             }
         ]
     })
 
     const gerSist = await prisma.universitySection.findFirstOrThrow({
         where: {
-            name: 'Gerência de Sistemas'
+            slug: 'gersist'
         }
     })
 
     const secGrad = await prisma.universitySection.findFirstOrThrow({
         where: {
-            name: 'Secretaria de Graduação'
+            slug: 'secgrad'
         }
     })
 
