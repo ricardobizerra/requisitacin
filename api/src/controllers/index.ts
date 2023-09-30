@@ -1,1 +1,5 @@
-// import and export all controllers
+import UserController from "./UserController";
+
+export {
+    UserController
+}

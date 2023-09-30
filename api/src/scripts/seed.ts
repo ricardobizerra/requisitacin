@@ -1,6 +1,7 @@
 import prisma from "../database/connection"
 
 const setupDatabase = async () => {
+    // step 1 -> create university sections
     await prisma.universitySection.createMany({
         data: [
             {
@@ -26,6 +27,7 @@ const setupDatabase = async () => {
         }
     })
 
+    // step 2 -> create services and link them to university sections
     await prisma.service.createMany({
         data: [
             {
@@ -50,6 +52,38 @@ const setupDatabase = async () => {
             }
         ]
     })
+
+    // step 3 -> create users and link them to their roles (student or admin)
+    await prisma.user.createMany({
+        data: [
+            {
+                name: 'Fulano Beltrano da Silva',
+                email: 'fbs-teste@cin.ufpe.br',
+                role: 'STUDENT',
+            },
+            {
+                name: 'Ciclana Lima da Silva Beltrana',
+                email: 'clsb-teste@cin.ufpe.br',
+                role: "ADMIN",
+                universitySectionId: gerSist.id,
+            },
+            {
+                name: 'Beltrano da Silva Ciclano',
+                email: 'bsc12-teste@cin.ufpe.br',
+                role: "ADMIN",
+                universitySectionId: secGrad.id,
+            },
+        ]
+    })
+
+    const fbs = await prisma.user.findFirstOrThrow({
+        where: {
+            email: 'fbs-teste@cin.ufpe.br'
+        }
+    })
+
+    // step 4 -> create student and link to the user
+    await prisma.student.create({ data: { userId: fbs.id } });
 }
 
 setupDatabase()

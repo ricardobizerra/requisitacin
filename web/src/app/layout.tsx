@@ -1,6 +1,8 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Rubik } from 'next/font/google'
+import { Header } from '@/components'
+import { RoleProvider } from '@/contexts'
 
 const rubik = Rubik({ subsets: ['latin'] })
 
@@ -15,8 +17,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={rubik.className}>{children}</body>
-    </html>
+    <RoleProvider>
+      <html lang="pt-br">
+        <body className={rubik.className}>
+            <Header title={metadata.title as string} />
+
+            {children}
+        </body>
+      </html>
+    </RoleProvider>
   )
 }
