@@ -5,7 +5,94 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id    String @id @default(uuid())
+  email String @unique
+  name  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  role UserRole @default(STUDENT)
+
+  Student Student?
+
+  UniversitySection   UniversitySection? @relation(fields: [universitySectionId], references: [id])
+  universitySectionId String?
+}
+
+model Student {
+  id String @id @default(uuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  Requisition Requisition[]
+}
+
+model UniversitySection {
+  id   String @id @default(uuid())
+  name String
+  slug String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  admins       User[]
+  services     Service[]
+  requisitions Requisition[]
+}
+
+model Service {
+  id   String @id @default(uuid())
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  universitySection   UniversitySection @relation(fields: [universitySectionId], references: [id], onDelete: Cascade)
+  universitySectionId String
+
+  requisitions Requisition[]
+}
+
+model Requisition {
+  id     String            @id @default(uuid())
+  title  String
+  body   String
+  status RequisitionStatus @default(OPENED)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId String  @unique
+
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceId String  @unique
+
+  universitySection   UniversitySection @relation(fields: [universitySectionId], references: [id])
+  universitySectionId String            @unique
+}
+
+enum UserRole {
+  STUDENT
+  ADMIN
+}
+
+enum RequisitionStatus {
+  OPENED
+  CONCLUDED
 }
