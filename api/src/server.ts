@@ -1,4 +1,5 @@
 import fastify from 'fastify';
+import './database/connection';
 
 const app = fastify();
 
