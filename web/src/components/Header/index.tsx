@@ -73,7 +73,7 @@ export const Header = ({ title }: { title: string }) => {
                     }}
                 >
                     <SelectTrigger className="w-[180px]">
-                        <SelectValue defaultValue="dark" />
+                        <SelectValue placeholder="Selecione uma conta" />
                     </SelectTrigger>
                     <SelectContent>
                         {usersList.map((user) => (
