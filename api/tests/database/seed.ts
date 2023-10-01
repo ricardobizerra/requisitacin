@@ -1,6 +1,7 @@
-import prisma from "../database/connection"
+import testDatabase from "../database/connection"
 
 const setupDatabase = async () => {
+    const prisma = await testDatabase.connectSeed();
     // step 1 -> create university sections
     await prisma.universitySection.createMany({
         data: [
@@ -94,5 +95,5 @@ setupDatabase()
         console.log('❌ Error seeding database', error);
     })
     .finally(async () => {
-        await prisma.$disconnect();
+        await testDatabase.disconnect();
     })
