@@ -24,6 +24,10 @@ Está sendo utilizada a versão 18.16 do Node.js.
     DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
     DATABASE_USER="johndoe"
     DATABASE_PASSWORD="randompassword"
+
+    DATABASE_TEST_URL="postgresql://johndoetest:randompasswordtest@localhost:5433/test?schema=public"
+    DATABASE_TEST_USER="johndoetest"
+    DATABASE_TEST_PASSWORD="randompasswordtest"
     ```
 1. Execute `yarn migration` para aplicar migrations no banco de dados;
 1. Execute `yarn seed:db` para aplicar os seguintes dados:
@@ -67,6 +71,10 @@ It's being used Node.js version 18.16.
     DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
     DATABASE_USER="johndoe"
     DATABASE_PASSWORD="randompassword"
+
+    DATABASE_TEST_URL="postgresql://johndoetest:randompasswordtest@localhost:5433/test?schema=public"
+    DATABASE_TEST_USER="johndoetest"
+    DATABASE_TEST_PASSWORD="randompasswordtest"
     ```
 1. Run `yarn migration` to apply migrations to database;
 1. Run `yarn seed:db` to insert the following data:
