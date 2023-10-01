@@ -6,29 +6,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { api } from "@/lib/axios"
 import { useEffect, useState } from "react"
 import { useRole } from "@/contexts"
-
-interface User {
-    createdAt: Date
-    email: string
-    id: string
-    name: string
-    role: "STUDENT" | "ADMIN"
-    universitySectionId?: string
-    updatedAt: Date
-}
+import { User } from "@/contexts/RoleContext"
 
 export const Header = ({ title }: { title: string }) => {
-    const [usersList, setUsersList] = useState<User[]>([]);
 
-    const { user: userLogged, setUser } = useRole()
+    const { 
+        user: userLogged, 
+        setUser,
+        usersList,
+        fetchUser
+    } = useRole()
 
-    const fetchUser = async () => {
-        const { data } = await api.get('/user');
-        setUsersList(data.data);
-    }
-
-    const displayRole = (role: User['role']) => {
-        switch (role) {
+    const displayRole = (user: User) => {
+        switch (user.role) {
             case 'STUDENT':
                 return {
                     text: 'Aluno',
@@ -36,7 +26,7 @@ export const Header = ({ title }: { title: string }) => {
                 };
             case 'ADMIN':
                 return {
-                    text: 'Servidor',
+                    text: user.UniversitySection?.slug,
                     color: 'bg-green-500'
                 };
             default:
@@ -80,7 +70,7 @@ export const Header = ({ title }: { title: string }) => {
                             <SelectItem key={user.id} value={user.email.split('-teste')[0]}>
                                 {user.email.split('-teste')[0]}
                                 {' '}
-                                <span className={`${displayRole(user.role).color} text-xs text-white p-1 ml-1 rounded uppercase`}>{displayRole(user.role).text}</span>
+                                <span className={`${displayRole(user).color} text-xs text-white p-1 ml-1 rounded uppercase`}>{displayRole(user).text}</span>
                             </SelectItem>
                         ))}
                     </SelectContent>

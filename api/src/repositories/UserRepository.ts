@@ -3,7 +3,16 @@ import prisma from '../database/connection';
 
 class UserRepository {
     async findMany(): Promise<User[]> {
-        const users = await prisma.user.findMany();
+        const users = await prisma.user.findMany({
+            include: {
+                Student: true,
+                UniversitySection: {
+                    include: {
+                        services: true
+                    }
+                }
+            }
+        });
 
         return users;
     }
