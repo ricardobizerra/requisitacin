@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import 'dotenv/config';
+import { setupDatabase } from './seed';
 
 class DatabaseTestConnection {
     private prismaTestClient: PrismaClient;
@@ -10,6 +11,12 @@ class DatabaseTestConnection {
 
     async connect() {
         await this.prismaTestClient.$connect();
+        await setupDatabase(this.prismaTestClient).then(() => {
+            console.log('📦 Successfully seeded database');
+        })
+        .catch((error) => {
+            console.log('❌ Error seeding database', error);
+        })
     }
 
     async connectSeed() {

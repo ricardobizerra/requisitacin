@@ -19,7 +19,7 @@ app.listen({
     port: serverPort,
 })
 .then(() => {
-    console.log('🚀 Server running on http://localhost:3333');
+    console.log(`🚀 Server running on http://localhost:${serverPort}`);
 })
 .catch((err) => {
     console.error('Ocorreu um erro ao iniciar o Back-End:', err);

@@ -1,7 +1,11 @@
+import { Prisma, PrismaClient } from "@prisma/client"
+import { DefaultArgs } from "@prisma/client/runtime/library"
+
 import testDatabase from "../database/connection"
 
-const setupDatabase = async () => {
-    const prisma = await testDatabase.connectSeed();
+export const setupDatabase = async (
+    prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+) => {
     // step 1 -> create university sections
     await prisma.universitySection.createMany({
         data: [
@@ -86,14 +90,3 @@ const setupDatabase = async () => {
     // step 4 -> create student and link to the user
     await prisma.student.create({ data: { userId: fbs.id } });
 }
-
-setupDatabase()
-    .then(() => {
-        console.log('📦 Successfully seeded database');
-    })
-    .catch((error) => {
-        console.log('❌ Error seeding database', error);
-    })
-    .finally(async () => {
-        await testDatabase.disconnect();
-    })

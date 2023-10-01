@@ -5,6 +5,7 @@ import connection from '../database/connection';
 
 describe('User', () => {
     beforeAll(async () => {
+        await connection.clearValues();
         await connection.connect();
         await app.ready();
     });

@@ -78,13 +78,13 @@ model Requisition {
   updatedAt DateTime @updatedAt
 
   student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  studentId String  @unique
+  studentId String
 
   service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-  serviceId String  @unique
+  serviceId String
 
   universitySection   UniversitySection @relation(fields: [universitySectionId], references: [id])
-  universitySectionId String            @unique
+  universitySectionId String
 }
 
 enum UserRole {
