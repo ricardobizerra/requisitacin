@@ -5,7 +5,11 @@ import { SectionRouter } from "./SectionRoutes";
 
 export const appRoutes = async (app: FastifyInstance) => {
     // health route -> checking if the server is live
-    app.get('/', async () => {
+    app.get('/', {
+        schema: {
+            summary: 'Health route',
+        }
+    }, async () => {
         return 'Hello World';
     });
 
