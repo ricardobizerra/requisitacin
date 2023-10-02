@@ -5,6 +5,7 @@ import { RequisitionsTable, columns } from "./columns"
 import { DataTable } from "./dataTable"
 import { useEffect, useState } from "react"
 import { useRole } from "@/contexts"
+import dayjs from "dayjs"
 import { setTimeout } from "timers"
 
 export default function StudentTable() {
@@ -21,13 +22,7 @@ export default function StudentTable() {
     console.log(data)
 
     data.forEach((requisition) => {
-        const requisitionDate = new Date(requisition.createdAt)
-        const formattedDate = requisitionDate.toLocaleDateString('pt-BR', {
-            timeZone: 'UTC'
-        }) + ' ' + requisitionDate.toLocaleTimeString('pt-BR', { 
-            timeZone: 'UTC' 
-        })
-        requisition.createdAt = formattedDate
+        requisition.createdAt = dayjs(requisition.createdAt).format('DD/MM/YYYY HH:mm:ss')
 
         const service = searchService(requisition.id)
         requisition.serviceId = service?.name || 'Não encontrado'

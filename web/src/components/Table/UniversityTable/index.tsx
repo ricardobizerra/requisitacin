@@ -5,6 +5,7 @@ import { RequisitionsTable, columns } from "./columns"
 import { DataTable } from "./dataTable"
 import { useEffect, useState } from "react"
 import { useRole } from "@/contexts"
+import dayjs from "dayjs"
 
 export default function UniversityTable() {
     const { user, searchStudent, searchService } = useRole()
@@ -18,21 +19,15 @@ export default function UniversityTable() {
     }
 
     data.forEach((requisition) => {
-        const requisitionDate = new Date(requisition.createdAt)
-        const formattedDate = requisitionDate.toLocaleDateString('pt-BR', {
-            timeZone: 'UTC'
-        }) + ' ' + requisitionDate.toLocaleTimeString('pt-BR', { 
-            timeZone: 'UTC' 
-        })
-        requisition.createdAt = formattedDate
+      requisition.createdAt = dayjs(requisition.createdAt).format('DD/MM/YYYY HH:mm:ss')
 
-        const student = searchStudent(requisition.studentId)
-        requisition.studentId = `${student?.name} (${student?.email.split('-')[0]})` || 'Não encontrado'
+      const student = searchStudent(requisition.studentId)
+      requisition.studentId = `${student?.name} (${student?.email.split('-')[0]})` || 'Não encontrado'
 
-        const service = searchService(requisition.serviceId)
-        requisition.serviceId = service?.name || 'Não encontrado'
+      const service = searchService(requisition.serviceId)
+      requisition.serviceId = service?.name || 'Não encontrado'
 
-        requisition.status = requisition.status === 'OPENED' ? 'Aberto' : 'Concluído'
+      requisition.status = requisition.status === 'OPENED' ? 'Aberto' : 'Concluído'
     })
 
     setRequisitions(data)
