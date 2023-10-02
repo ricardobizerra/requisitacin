@@ -5,17 +5,20 @@ import { RequisitionsTable, columns } from "./columns"
 import { DataTable } from "./dataTable"
 import { useEffect, useState } from "react"
 import { useRole } from "@/contexts"
+import { setTimeout } from "timers"
 
-export default function UniversityTable() {
-    const { user, searchStudent, searchService } = useRole()
+export default function StudentTable() {
+    const { user, searchService } = useRole()
     const [requisitions, setRequisitions] = useState<RequisitionsTable[]>([])
 
   const fetchRequisitions = async () => {
     const { 
         data: { data } 
-    } = await api.get(`/requisition/university-section/${user?.universitySectionId}`) as { 
+    } = await api.get(`/requisition/student/${user?.Student?.id}`) as { 
         data: { data: RequisitionsTable[] } 
     }
+
+    console.log(data)
 
     data.forEach((requisition) => {
         const requisitionDate = new Date(requisition.createdAt)
@@ -26,10 +29,7 @@ export default function UniversityTable() {
         })
         requisition.createdAt = formattedDate
 
-        const student = searchStudent(requisition.studentId)
-        requisition.studentId = `${student?.name} (${student?.email.split('-')[0]})` || 'Não encontrado'
-
-        const service = searchService(requisition.serviceId)
+        const service = searchService(requisition.id)
         requisition.serviceId = service?.name || 'Não encontrado'
 
         requisition.status = requisition.status === 'OPENED' ? 'Aberto' : 'Concluído'
@@ -40,7 +40,7 @@ export default function UniversityTable() {
 
   useEffect(() => {
     fetchRequisitions();
-  }, []);   
+  }, []);
 
   return (
     <div className="container mx-auto py-10">

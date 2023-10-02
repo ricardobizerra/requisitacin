@@ -5,7 +5,15 @@ class UserRepository {
     async findMany(): Promise<User[]> {
         const users = await prisma.user.findMany({
             include: {
-                Student: true,
+                Student: {
+                    include: {
+                        Requisition: {
+                            include: {
+                                service: true
+                            }
+                        }
+                    }
+                },
                 UniversitySection: {
                     include: {
                         services: true

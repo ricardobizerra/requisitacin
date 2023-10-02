@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Rubik } from 'next/font/google'
 import { Header } from '@/components'
 import { RoleProvider } from '@/contexts'
+import { Toaster } from '@/components/ui/toaster'
 
 const rubik = Rubik({ subsets: ['latin'] })
 
@@ -23,6 +24,8 @@ export default function RootLayout({
             <Header title={metadata.title as string} />
 
             {children}
+
+            <Toaster />
         </body>
       </html>
     </RoleProvider>
